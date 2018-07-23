@@ -7,9 +7,7 @@ module Slackword
     #
     class NYTimes
       def self.crossword_for(date)
-        date
-          .yield_self(&method(:download_crossword_for_date))
-          .yield_self(&method(:parse_crossword))
+        parse_crossword(download_crossword_for_date(date))
       end
 
       private

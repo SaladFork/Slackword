@@ -60,7 +60,7 @@ module Slackword
 
         thread_text =
           haiku_clauses
-          .map{ |clause| "> #{clause}" }
+          .map{ |clause| "> #{clause.join(' ')}" }
           .join("\n")
 
         client.say(

@@ -14,8 +14,8 @@ module Slackword
     KNOWN_CROSSWORDS = {}
 
     # Haiku bot
-    match(/\A(?<phrase>.*)\z/) do |client, data, match|
-      is_haiku, haiku_clauses = SyllableDictionary.haiku(match[:phrase])
+    scan(/\A(?<phrase>.*)\z/) do |client, data, matches|
+      is_haiku, haiku_clauses = SyllableDictionary.haiku(matches[0][:phrase])
 
       if is_haiku
         client.web_client.reactions_add(

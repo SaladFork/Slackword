@@ -57,6 +57,17 @@ module Slackword
           timestamp: data.ts,
           as_user: true
         )
+
+        thread_text =
+          haiku_clauses
+          .map{ |clause| "> #{clause}" }
+          .join("\n")
+
+        client.say(
+          channel: data.channel,
+          text: thread_text,
+          thread_ts: data.thread_ts || data.ts
+        )
       end
     end
 

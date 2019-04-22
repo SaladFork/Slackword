@@ -15,7 +15,7 @@ module Slackword
 
     # Haiku bot
     match(/\A(?<phrase>.*)\z/) do |client, data, match|
-      is_haiku, haiku_clauses = SyllableDictionary.haiku(match[0][:phrase])
+      is_haiku, haiku_clauses = SyllableDictionary.haiku(match[:phrase])
 
       if is_haiku
         client.web_client.reactions_add(

@@ -17,14 +17,14 @@ module Slackword
     match(/\A(?<phrase>.*)\z/) do |client, data, match|
       is_haiku, haiku_clauses = SyllableDictionary.haiku(match[:phrase])
 
-      return unless is_haiku
-
-      client.web_client.reactions_add(
-        name: :haiku,
-        channel: data.channel,
-        timestamp: data.ts,
-        as_user: true
-      )
+      if is_haiku
+        client.web_client.reactions_add(
+          name: :haiku,
+          channel: data.channel,
+          timestamp: data.ts,
+          as_user: true
+        )
+      end
     end
 
     # TODO: Support Crosswords other than NYT

@@ -13,20 +13,6 @@ module Slackword
   class Bot < SlackRubyBot::Bot
     KNOWN_CROSSWORDS = {}
 
-    # Haiku bot
-    match(/\A(?<phrase>.*)\z/) do |client, data, match|
-      is_haiku, haiku_clauses = SyllableDictionary.haiku(match[:phrase])
-
-      if is_haiku
-        client.web_client.reactions_add(
-          name: :haiku,
-          channel: data.channel,
-          timestamp: data.ts,
-          as_user: true
-        )
-      end
-    end
-
     # TODO: Support Crosswords other than NYT
     scan(/\[(?:([a-z0-9\/\-]+)\b )?([0-9]+)([ad])\]/i) do |client, data, matches|
       client.typing(channel: data.channel)
@@ -58,6 +44,20 @@ module Slackword
       end
 
       client.say(text: text, channel: data.channel)
+    end
+
+    # Haiku bot
+    match(/\A(?<phrase>.*)\z/) do |client, data, match|
+      is_haiku, haiku_clauses = SyllableDictionary.haiku(match[:phrase])
+
+      if is_haiku
+        client.web_client.reactions_add(
+          name: :haiku,
+          channel: data.channel,
+          timestamp: data.ts,
+          as_user: true
+        )
+      end
     end
 
     private_class_method def self.parse_matches(matches)

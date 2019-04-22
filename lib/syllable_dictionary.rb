@@ -30,7 +30,7 @@ class SyllableDictionary
   end
 
   def self.haiku(sentence)
-    words = sentence.split(/\W/).compact
+    words = sentence.split(/\s/).compact
 
     return [false, nil] unless words.all?{ |word| in_dictionary?(word) }
 

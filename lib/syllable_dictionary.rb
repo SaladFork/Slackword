@@ -3,7 +3,7 @@ require 'singleton'
 class SyllableDictionary
   include Singleton
 
-  CMU_DICT_FILE = '../data/cmudict-0.7b.txt'.freeze
+  CMU_DICT_FILE = File.join(File.dirname(__FILE__), '../data/cmudict-0.7b.txt')
 
   attr_reader :counts
 

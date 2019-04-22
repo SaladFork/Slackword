@@ -17,8 +17,22 @@ class SyllableDictionary
       clean_line = line.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').chomp
       spelling, arpabet = clean_line.split('  ')
 
+      next if spelling.include?('(')
+
       syllable_dictionary[spelling] = arpabet.count('0123456789')
     end
+
+    @counts[ '0'] = @counts['ZERO']
+    @counts[ '1'] = @counts['ONE']
+    @counts[ '2'] = @counts['TWO']
+    @counts[ '3'] = @counts['THREE']
+    @counts[ '4'] = @counts['FOUR']
+    @counts[ '5'] = @counts['FIVE']
+    @counts[ '6'] = @counts['SIX']
+    @counts[ '7'] = @counts['SEVEN']
+    @counts[ '8'] = @counts['EIGHT']
+    @counts[ '9'] = @counts['NINE']
+    @counts['10'] = @counts['TEN']
   end
 
   def self.count_syllables(word)

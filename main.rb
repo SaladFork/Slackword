@@ -7,10 +7,25 @@ require 'date'
 require 'slack-ruby-bot'
 
 require_relative './lib/downloaders/nytimes'
+require_relative './lib/syllable_dictionary'
 
 module Slackword
   class Bot < SlackRubyBot::Bot
     KNOWN_CROSSWORDS = {}
+
+    # Haiku bot
+    match(/\A(?<phrase>.*)\z/) do |client, data, match|
+      is_haiku, haiku_clauses = SyllableDictionary.haiku(match[:phrase])
+
+      return unless is_haiku
+
+      client.web_client.reactions_add(
+        name: :haiku,
+        channel: data.channel,
+        timestamp: data.ts,
+        as_user: true
+      )
+    end
 
     # TODO: Support Crosswords other than NYT
     scan(/\[(?:([a-z0-9\/\-]+)\b )?([0-9]+)([ad])\]/i) do |client, data, matches|
@@ -31,13 +46,6 @@ module Slackword
 
       KNOWN_CROSSWORDS[date] ||= Slackword::Downloaders::NYTimes.crossword_for(date)
       crossword = KNOWN_CROSSWORDS[date]
-
-      # date = begin
-      #          Date.parse(date)
-      #        rescue ArgumentError
-      #          client.say(text: "Sorry <@#{data.user}>, not sure what date you meant", channel: data.channel)
-      #          return
-      #        end
 
       text = "*#{crossword[:title]}*"
 

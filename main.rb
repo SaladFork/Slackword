@@ -52,7 +52,7 @@ module Slackword
 
       if is_haiku
         client.web_client.reactions_add(
-          name: :thumbsup,
+          name: :thinking_face,
           channel: data.channel,
           timestamp: data.ts,
           as_user: true

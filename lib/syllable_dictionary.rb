@@ -19,7 +19,11 @@ class SyllableDictionary
 
       next if spelling.include?('(')
 
-      syllable_dictionary[spelling] = arpabet.count('0123456789')
+      syllables = arpabet.count('0123456789')
+
+      next if syllables > 7
+
+      syllable_dictionary[spelling] = syllables
     end
 
     @counts[ '0'] = @counts['ZERO']

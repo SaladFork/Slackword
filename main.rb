@@ -52,22 +52,22 @@ module Slackword
 
       if is_haiku
         client.web_client.reactions_add(
-          name: :haiku,
+          name: :thumbsup,
           channel: data.channel,
           timestamp: data.ts,
           as_user: true
         )
 
-        thread_text =
-          haiku_clauses
-          .map{ |clause| "> #{clause.join(' ')}" }
-          .join("\n")
+        # thread_text =
+        #   haiku_clauses
+        #   .map{ |clause| "> #{clause.join(' ')}" }
+        #   .join("\n")
 
-        client.say(
-          channel: data.channel,
-          text: thread_text,
-          thread_ts: data.thread_ts || data.ts
-        )
+        # client.say(
+        #   channel: data.channel,
+        #   text: thread_text,
+        #   thread_ts: data.thread_ts || data.ts
+        # )
       end
     end
 

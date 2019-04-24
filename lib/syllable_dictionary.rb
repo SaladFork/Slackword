@@ -50,9 +50,9 @@ class SyllableDictionary
   def self.haiku(sentence)
     words = sentence.split(/\s/).compact
 
-    return [false, nil] unless words.all?{ |word| in_dictionary?(word) }
+    return [false, nil] unless words.all?{ |word| in_dictionary?(normalize(word)) }
 
-    words_with_syllable_counts = words.map{ |word| [word, count_syllables(word)] }
+    words_with_syllable_counts = words.map{ |word| [word, count_syllables(normalize(word))] }
 
     return [false, nil] unless words_with_syllable_counts.sum(&:last) == 17
 
@@ -76,4 +76,8 @@ class SyllableDictionary
 
     [true, clauses]
   end
+end
+
+def normalize(word)
+  word.tr('^a-zA-Z0-9', '').upcase
 end

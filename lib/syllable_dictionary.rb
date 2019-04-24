@@ -79,5 +79,5 @@ class SyllableDictionary
 end
 
 def normalize(word)
-  word.tr('^a-zA-Z0-9', '').upcase
+  word.tr("^a-zA-Z0-9'", '').upcase
 end

@@ -63,11 +63,11 @@ module Slackword
             .map{ |clause| "> #{clause.join(' ')}" }
             .join("\n")
 
-        client.say(
-          channel: data.channel,
-          text: thread_text,
-          thread_ts: data.thread_ts || data.ts
-        )
+        # client.say(
+        #   channel: data.channel,
+        #   text: thread_text,
+        #   thread_ts: data.thread_ts || data.ts
+        # )
 
         client.web_client.chat_postMessage(
           channel: '#found-poetry',

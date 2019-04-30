@@ -71,7 +71,7 @@ module Slackword
 
         client.web_client.chat_postMessage(
           channel: '#found-poetry',
-          text: "#{thread_text}\n--<@#{data.user}> (<##{data.channel}>)",
+          text: "A Haiku by <@#{data.user}> in <#{data.channel}>: #{thread_text}",
           as_user: true
         )
       end

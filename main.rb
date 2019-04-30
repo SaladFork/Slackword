@@ -60,13 +60,18 @@ module Slackword
 
         thread_text =
           haiku_clauses
-          .map{ |clause| "> #{clause.join(' ')}" }
-          .join("\n")
+            .map{ |clause| "> #{clause.join(' ')}" }
+            .join("\n")
 
         client.say(
           channel: data.channel,
           text: thread_text,
           thread_ts: data.thread_ts || data.ts
+        )
+
+        client.say(
+          channel: '#found-poetry',
+          text: "#{thread_text}\n--#{data.user} (#{data.channel})"
         )
       end
     end

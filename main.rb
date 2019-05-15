@@ -50,7 +50,7 @@ module Slackword
       unless match['expression'].start_with?('>')
         message = "<@#{data.user}> please quote what you want me to analyze. I saw:\n"
         message += '> `'
-        message += data['expression'].codepoints.join(' ')
+        message += match['expression'].codepoints.join(' ')
         message += '`'
         client.say(channel: data.channel, text: message)
         return

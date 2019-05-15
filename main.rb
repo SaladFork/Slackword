@@ -46,6 +46,10 @@ module Slackword
       client.say(text: text, channel: data.channel)
     end
 
+    command 'analyze' do |client, data, match|
+      client.say(channel: data.channel, text: match['command'])
+    end
+
     # Haiku bot
     match(/\A(?<phrase>.*)\z/) do |client, data, match|
       is_haiku, haiku_clauses = SyllableDictionary.haiku(match[:phrase])

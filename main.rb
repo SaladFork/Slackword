@@ -48,15 +48,20 @@ module Slackword
 
     command 'analyze' do |client, data, match|
       subject = match['expression'].strip
-      unless subject.start_with?('>')
+      unless subject.start_with?('&gt;')
         message = "<@#{data.user}> please quote what you want me to analyze. I saw:\n"
+        message += '> `'
+        message += match['expression']
+        message += '`'
+        message +="\n\n"
         message += '> `'
         message += match['expression'].chars.map(&:ord).join(' ')
         message += '`'
         client.say(channel: data.channel, text: message)
         return
       end
-      client.say(channel: data.channel, text: match['expression'])
+      subject = subject.delete_prefix("&gt; ")
+      client.say(channel: data.channel, text: subject)
     end
 
     # Haiku bot

@@ -47,7 +47,7 @@ module Slackword
     end
 
     command 'analyze' do |client, data, match|
-      unless match['expression'].start_with?('>')
+      unless match['expression'].start_with?("\n>")
         message = "<@#{data.user}> please quote what you want me to analyze. I saw:\n"
         message += '> `'
         message += match['expression'].codepoints.join(' ')

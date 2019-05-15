@@ -47,7 +47,7 @@ module Slackword
     end
 
     command 'analyze' do |client, data, match|
-      client.say(channel: data.channel, text: match['command'])
+      client.say(channel: data.channel, text: match['expression'])
     end
 
     # Haiku bot

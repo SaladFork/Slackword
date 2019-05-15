@@ -48,20 +48,48 @@ module Slackword
 
     command 'analyze' do |client, data, match|
       subject = match['expression'].strip
-      unless subject.start_with?('&gt;')
-        message = "<@#{data.user}> please quote what you want me to analyze. I saw:\n"
-        message += '> `'
-        message += match['expression']
-        message += '`'
-        message +="\n\n"
-        message += '> `'
-        message += match['expression'].chars.map(&:ord).join(' ')
-        message += '`'
-        client.say(channel: data.channel, text: message)
-        return
+
+      words = SyllableDictionary.split_sentence(subject)
+
+      text = words.map do |word|
+        normalized = SyllableDictionary.normalize(word)
+        count = SyllableDictionary.count_syllables(normalized)
+
+        syllable_count = count && count.positive? ? "#{count} #{count == 1 ? 'syllable' : 'syllables'}" : 'NOT FOUND'
+
+        [
+          '●',
+          "`#{word}`",
+          '->',
+          "`#{normalized}`",
+          ' | ',
+          syllable_count
+        ].join(' ')
+      end.join("\n")
+
+      is_haiku, haiku_clauses = SyllableDictionary.haiku(subject)
+
+      if is_haiku
+        text << "\nFound haiku:\n"
+        text << haiku_clauses
+                  .map{ |clause| "> #{clause.join(' ')}" }
+                  .join("\n")
       end
-      subject = subject.delete_prefix("&gt; ")
-      client.say(channel: data.channel, text: subject)
+
+      attachments = [
+        {
+          title: 'Haiku Detection',
+          text: text,
+          color: is_haiku ? '#02AC1E' : '#B00B1E'
+        }
+      ]
+
+      client.web_client.chat_postMessage(
+        channel: data.channel,
+        text: "Analyzing `#{subject}`",
+        as_user: true,
+        attachments: attachments.to_json
+      )
     end
 
     # Haiku bot

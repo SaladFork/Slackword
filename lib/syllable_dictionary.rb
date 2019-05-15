@@ -47,8 +47,12 @@ class SyllableDictionary
     instance.counts.key?(word.upcase)
   end
 
+  def self.split_sentence(sentence)
+    sentence.split(/\s/).compact
+  end
+
   def self.haiku(sentence)
-    words = sentence.split(/\s/).compact
+    words = split_sentence(sentence)
 
     return [false, nil] unless words.all?{ |word| in_dictionary?(normalize(word)) }
 
@@ -76,8 +80,8 @@ class SyllableDictionary
 
     [true, clauses]
   end
-end
 
-def normalize(word)
-  word.tr("^a-zA-Z0-9'", '').upcase
+  def self.normalize(word)
+    word.tr("^a-zA-Z0-9'", '').upcase
+  end
 end

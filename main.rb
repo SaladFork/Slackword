@@ -121,17 +121,6 @@ module Slackword
           as_user: true
         )
       end
-
-      is_tmnt, _ = SyllableDictionary.tmnt(match[:phrase])
-
-      if is_tmnt
-        client.web_client.reactions_add(
-          name: :ninja_turtle,
-          channel: data.channel,
-          timestamp: data.ts,
-          as_user: true
-        )
-      end
     end
 
     private_class_method def self.parse_matches(matches)

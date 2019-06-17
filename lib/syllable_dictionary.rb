@@ -81,18 +81,6 @@ class SyllableDictionary
     [true, clauses]
   end
 
-  def self.tmnt(sentence)
-    words = split_sentence(sentence)
-
-    return [false, nil] unless words.all?{ |word| in_dictionary?(normalize(word)) }
-
-    words_with_syllable_counts = words.map{ |word| [word, count_syllables(normalize(word))] }
-
-    return [false, nil] unless words_with_syllable_counts.sum(&:last) == 8
-
-    [true, words]
-  end
-
   def self.normalize(word)
     word.tr("^a-zA-Z0-9'", '').upcase
   end

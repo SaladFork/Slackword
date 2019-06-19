@@ -48,7 +48,7 @@ class SyllableDictionary
   end
 
   def self.split_sentence(sentence)
-    sentence.split(/\s/).compact
+    sentence.split(/[\s_]/).compact
   end
 
   def self.haiku(sentence)

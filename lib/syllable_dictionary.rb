@@ -41,6 +41,7 @@ class SyllableDictionary
 
     # Missing words
     @counts['BOT'] = 1
+    @counts['PROFUNDITY'] = 4
   end
 
   def self.count_syllables(word)

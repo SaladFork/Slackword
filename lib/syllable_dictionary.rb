@@ -26,6 +26,7 @@ class SyllableDictionary
       syllable_dictionary[spelling] = syllables
     end
 
+    # Some numbers
     @counts[ '0'] = @counts['ZERO']
     @counts[ '1'] = @counts['ONE']
     @counts[ '2'] = @counts['TWO']
@@ -37,6 +38,9 @@ class SyllableDictionary
     @counts[ '8'] = @counts['EIGHT']
     @counts[ '9'] = @counts['NINE']
     @counts['10'] = @counts['TEN']
+
+    # Missing words
+    @counts['BOT'] = 1
   end
 
   def self.count_syllables(word)

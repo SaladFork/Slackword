@@ -109,12 +109,14 @@ module Slackword
             .map{ |clause| "> #{clause.join(' ')}" }
             .join("\n")
 
+        # Post the haiku message in the same channel/thread as original message
         # client.say(
         #   channel: data.channel,
         #   text: thread_text,
         #   thread_ts: data.thread_ts || data.ts
         # )
 
+        # Post the haiku message to a specific channel
         client.web_client.chat_postMessage(
           channel: '#found-poetry',
           text: "A haiku by <@#{data.user}> in <##{data.channel}>:\n#{thread_text}",

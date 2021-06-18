@@ -94,35 +94,8 @@ module Slackword
 
     # Haiku bot
     match(/\A(?<phrase>.*)\z/) do |client, data, match|
-      is_haiku, haiku_clauses = SyllableDictionary.haiku(match[:phrase])
-
-      if is_haiku
-        client.web_client.reactions_add(
-          name: :star,
-          channel: data.channel,
-          timestamp: data.ts,
-          as_user: true
-        )
-
-        thread_text =
-          haiku_clauses
-            .map{ |clause| "> #{clause.join(' ')}" }
-            .join("\n")
-
-        # Post the haiku message in the same channel/thread as original message
-        # client.say(
-        #   channel: data.channel,
-        #   text: thread_text,
-        #   thread_ts: data.thread_ts || data.ts
-        # )
-
-        # Post the haiku message to a specific channel
-        client.web_client.chat_postMessage(
-          channel: '#found-poetry',
-          text: "A haiku by <@#{data.user}> in <##{data.channel}>:\n#{thread_text}",
-          as_user: true
-        )
-      end
+      handle_haiku(client, data, match[:phrase])
+      handle_alphabetical_phrase(client, data, match[:phrase])
     end
 
     private_class_method def self.parse_matches(matches)
@@ -139,6 +112,57 @@ module Slackword
         results[:across].sort!
         results[:down].sort!
       end
+    end
+
+    private_class_method def self.handle_haiku(client, data, potential_haiku_phrase)
+      is_haiku, haiku_clauses = SyllableDictionary.haiku(potential_haiku_phrase)
+
+      return unless is_haiku
+
+      client.web_client.reactions_add(
+        name: :star,
+        channel: data.channel,
+        timestamp: data.ts,
+        as_user: true
+      )
+
+      thread_text =
+        haiku_clauses
+          .map{ |clause| "> #{clause.join(' ')}" }
+          .join("\n")
+
+      # Post the haiku message to a specific channel
+      client.web_client.chat_postMessage(
+        channel: '#found-poetry',
+        text: "A haiku by <@#{data.user}> in <##{data.channel}>:\n#{thread_text}",
+        as_user: true
+      )
+    end
+
+    private_class_method def self.handle_alphabetical_phrase(client, data, potential_alphabetical_phrase)
+      words = potential_alphabetical_phrase.split(/[\s_]/).compact
+      # Must have at least 3 words
+      return unless words.length >= 3
+
+      # Must have at least one word of at least 3 characters
+      return unless words.any? { |word| word.length >= 3 }
+
+      # All words must be in the dictionary
+      return unless words.all? { |word| SyllableDictionary.in_dictionary?(word) }
+
+      # Each word must be alphabetical
+      return unless words.all? { |word| word_is_alphabetical(word) }
+
+      client.web_client.reactions_add(
+        name: :thinking_face,
+        channel: data.channel,
+        timestamp: data.ts,
+        as_user: true
+      )
+    end
+
+    private_class_method def self.word_is_alphabetical(word)
+      word.chars.sort.join == word
     end
   end
 end

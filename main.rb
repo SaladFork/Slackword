@@ -162,7 +162,7 @@ module Slackword
     end
 
     private_class_method def self.word_is_alphabetical(word)
-      word.chars.downcase.sort.join == word.downcase
+      word.downcase.chars.sort.join == word.downcase
     end
   end
 end

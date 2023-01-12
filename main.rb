@@ -93,7 +93,7 @@ module Slackword
     end
 
     # Haiku bot
-    match(/\A(?<phrase>.*)\z/) do |client, data, match|
+    match(/(?<phrase>.*)/m) do |client, data, match|
       handle_haiku(client, data, match[:phrase])
       handle_alphabetical_phrase(client, data, match[:phrase])
     end

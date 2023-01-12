@@ -58,11 +58,11 @@ class SyllableDictionary
   end
 
   def self.haiku(sentence)
-    words = split_sentence(sentence).map{ |word| normalize(word) }
+    words = split_sentence(sentence)
 
-    return [false, nil] unless words.all?{ |word| in_dictionary?(word) }
+    return [false, nil] unless words.all?{ |word| in_dictionary?(normalize(word)) }
 
-    words_with_syllable_counts = words.map{ |word| [word, count_syllables(word)] }
+    words_with_syllable_counts = words.map{ |word| [word, count_syllables(normalize(word))] }
 
     return [false, nil] unless words_with_syllable_counts.sum(&:last) == 17
 

@@ -14,7 +14,7 @@ module Slackword
 
       def self.download_crossword_for_date(date)
         HTTParty.get(
-          "https://www.xwordinfo.com/JSON/Data.aspx?date=#{date}",
+          "https://www.xwordinfo.com/JSON/Data.ashx?date=#{date}",
           headers: { 'Referer' => 'slackbot' })
       end
 

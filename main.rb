@@ -100,7 +100,7 @@ module Slackword
       pin_text = pin['message']['text']
       # remove a single random word from the pin and replace it with underscores
       pin_words = pin_text.split(' ')
-      pin_words[rand(pin_words.length)] = '▁' * rand(1..10)
+      pin_words[rand(pin_words.length)] = '▁▁▁'
       pin_quiz_text = pin_words.join(' ')
       client.say(text: pin_quiz_text, channel: data.channel)
     end

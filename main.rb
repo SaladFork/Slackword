@@ -92,6 +92,19 @@ module Slackword
       )
     end
 
+    # If someone uses the command 'pingquiz', load the list of Pins for the
+    # current channel and send a random one to the channel.
+    command 'pingquiz' do |client, data, match|
+      pins = client.web_client.pins_list(channel: data.channel)['items']
+      pin = pins.sample
+      pin_text = pin['message']['text']
+      # remove a single random word from the pin and replace it with underscores
+      pin_words = pin_text.split(' ')
+      pin_words[rand(pin_words.length)] = '▁' * rand(1..10)
+      pin_quiz_text = pin_words.join(' ')
+      client.say(text: pin_quiz_text, channel: data.channel)
+    end
+
     # Haiku bot
     match(/(?<phrase>.*)/m) do |client, data, match|
       handle_haiku(client, data, match[:phrase])
